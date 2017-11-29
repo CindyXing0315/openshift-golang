@@ -1,2 +1,2 @@
-# openshift-golang
-# openshift-golang
+## openshift-golang build
+## openshift-golang deploy

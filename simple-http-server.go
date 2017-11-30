@@ -20,7 +20,7 @@ func main() {
   }
 
   fmt.Println("Started server")
+  fmt.Println("Serving on port", port)
   http.HandleFunc("/hello", HelloWorld)
   http.ListenAndServe(port, nil)
-  fmt.Println("Serving on port", port)
 }

@@ -11,7 +11,13 @@ type user struct {
 	Name string
 }
 
-func helloWorld(w http.ResponseWriter, r *http.Request) {
+// for health checks
+func CheckHealth(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "")
+}
+
+// handle simple json request
+func HelloWorld(w http.ResponseWriter, r *http.Request) {
 	body, err := r.GetBody()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -37,6 +43,7 @@ func main() {
 
 	fmt.Println("Started server")
 	fmt.Println("Serving on port", port)
-	http.HandleFunc("/hello", helloWorld)
+	http.HandleFunc("/hello", HelloWorld)
+	http.HandleFunc("/health", CheckHealth)
 	http.ListenAndServe(port, nil)
 }

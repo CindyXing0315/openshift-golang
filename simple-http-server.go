@@ -7,7 +7,7 @@ import (
 )
 
 func HelloWorld(w http.ResponseWriter, r *http.Request) {
-
+  fmt.Println("Request received")
   fmt.Fprintf(w, "Hello world!\n")
 }
 
@@ -22,4 +22,5 @@ func main() {
   fmt.Println("Started server")
   http.HandleFunc("/hello", HelloWorld)
   http.ListenAndServe(port, nil)
+  fmt.Println("Serving on port", port)
 }

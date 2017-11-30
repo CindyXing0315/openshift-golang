@@ -1,26 +1,42 @@
 package main
 
 import (
-  "fmt"
-  "net/http"
-  "os"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
 )
 
-func HelloWorld(w http.ResponseWriter, r *http.Request) {
-  fmt.Println("Request received")
-  fmt.Fprintf(w, "Hello world!\n")
+type user struct {
+	Name string
+}
+
+func helloWorld(w http.ResponseWriter, r *http.Request) {
+	body, err := r.GetBody()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	var usr user
+	err = json.NewDecoder(body).Decode(usr)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+	reply := fmt.Sprintf("Hello %s", usr.Name)
+	fmt.Fprintf(w, reply)
 }
 
 func main() {
 
-  port := os.Getenv("HTTP_PORT")
+	port := os.Getenv("HTTP_PORT")
 
-  if port == "" {
-    port = ":9000"
-  }
+	if port == "" {
+		port = ":9000"
+	}
 
-  fmt.Println("Started server")
-  fmt.Println("Serving on port", port)
-  http.HandleFunc("/hello", HelloWorld)
-  http.ListenAndServe(port, nil)
+	fmt.Println("Started server")
+	fmt.Println("Serving on port", port)
+	http.HandleFunc("/hello", helloWorld)
+	http.ListenAndServe(port, nil)
 }

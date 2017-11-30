@@ -7,27 +7,28 @@ import (
 	"os"
 )
 
-type user struct {
-	Name string
+type User struct {
+	Name string `json:"Name"`
 }
 
 // for health checks
 func CheckHealth(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "")
+	fmt.Fprintf(w, "ok")
 }
 
 // handle simple json request
 func HelloWorld(w http.ResponseWriter, r *http.Request) {
-	body, err := r.GetBody()
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+
+	if r.Body == nil {
+		http.Error(w, "Request body is missing", http.StatusBadRequest)
 		return
 	}
 
-	var usr user
-	err = json.NewDecoder(body).Decode(usr)
+	var usr User
+	err := json.NewDecoder(r.Body).Decode(&usr)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 	reply := fmt.Sprintf("Hello %s", usr.Name)
 	fmt.Fprintf(w, reply)

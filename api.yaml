@@ -15,7 +15,7 @@ spec:
             requests:
               cpu: "500m"
           command: [
-                "/app/api"
+                "/app/main"
           ]
           image: ec2-34-232-192-228.compute-1.amazonaws.com:5000/api
           imagePullPolicy: Always

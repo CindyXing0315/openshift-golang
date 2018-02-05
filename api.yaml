@@ -17,7 +17,7 @@ spec:
           command: [
                 "/app/main"
           ]
-          image: ec2-34-232-192-228.compute-1.amazonaws.com:5000/api
+          image: ec2-34-232-192-228.compute-1.amazonaws.com:5000/api:v1
           imagePullPolicy: Always
           env:
             - name: HTTP_PORT
